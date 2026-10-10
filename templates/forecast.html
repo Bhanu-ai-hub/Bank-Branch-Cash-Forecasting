@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <span class="badge">
+        CASH FORECAST
+    </span>
+
+    <h1>
+        Next-Day Cash Forecast
+    </h1>
+
+    <p>
+        Branch:
+        {{ branch["branch_name"] }}
+    </p>
+
+</div>
+
+
+<div class="stats-grid">
+
+
+    <div class="card">
+
+        <h3>
+            Forecast Date
+        </h3>
+
+        <h2>
+            {{ forecast["forecast_date"] }}
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            Teller Cash
+        </h3>
+
+        <h2>
+            ₹{{ "{:,.2f}".format(
+                forecast["teller_forecast"]
+            ) }}
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            ATM Cash
+        </h3>
+
+        <h2>
+            ₹{{ "{:,.2f}".format(
+                forecast["atm_forecast"]
+            ) }}
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            Total Demand
+        </h3>
+
+        <h2>
+            ₹{{ "{:,.2f}".format(
+                forecast["total_forecast"]
+            ) }}
+        </h2>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Recommended Cash Indent
+    </h2>
+
+
+    <div class="forecast-result">
+
+        <div>
+
+            <span>
+                Vault Balance
+            </span>
+
+            <strong>
+                ₹{{ "{:,.2f}".format(
+                    forecast["vault_balance"]
+                ) }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Safety Stock
+            </span>
+
+            <strong>
+                ₹{{ "{:,.2f}".format(
+                    forecast["safety_stock"]
+                ) }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Recommended Indent
+            </span>
+
+            <strong>
+                ₹{{ "{:,.2f}".format(
+                    forecast["recommended_indent"]
+                ) }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Forecast Logic
+    </h2>
+
+    <ul>
+
+        <li>
+            Uses recent historical withdrawal data.
+        </li>
+
+        <li>
+            Teller and ATM cash are forecast separately.
+        </li>
+
+        <li>
+            Salary days receive an additional demand adjustment.
+        </li>
+
+        <li>
+            Festival periods receive an additional demand adjustment.
+        </li>
+
+        <li>
+            ATM demand receives a weekend adjustment.
+        </li>
+
+        <li>
+            Safety stock is added before calculating the indent.
+        </li>
+
+        <li>
+            Existing vault balance is deducted from required cash.
+        </li>
+
+    </ul>
+
+</div>
+
+{% endblock %}

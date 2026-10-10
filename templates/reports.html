@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        Reports
+    </h1>
+
+    <p>
+        Branch cash transactions and forecasts.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Forecast History
+    </h2>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Teller
+                    </th>
+
+                    <th>
+                        ATM
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Safety Stock
+                    </th>
+
+                    <th>
+                        Vault
+                    </th>
+
+                    <th>
+                        Recommended Indent
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in forecasts %}
+
+                <tr>
+
+                    <td>
+                        {{ item["forecast_date"] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            item["teller_forecast"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            item["atm_forecast"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            item["total_forecast"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            item["safety_stock"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            item["vault_balance"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            item["recommended_indent"]
+                        ) }}
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="7">
+                        No forecast records available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        6-Hour Cash Monitor
+    </h1>
+
+    <p>
+        Automatic calculation of transfer
+        requirement and projected remaining
+        bank cash.
+    </p>
+
+</div>
+
+
+<div
+    id="monitor-card"
+    class="card status-card
+    {{ monitor['reminder_level']|lower }}"
+>
+
+    <h2 id="level">
+
+        {{ monitor["reminder_level"] }}
+
+    </h2>
+
+
+    <p
+        id="reminder"
+        class="reminder"
+    >
+
+        {{ monitor["reminder_message"] }}
+
+    </p>
+
+
+    <div class="monitor-grid">
+
+        <div>
+
+            <span>
+                Opening Cash
+            </span>
+
+            <strong id="opening">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["opening_balance"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                6-Hour Withdrawals
+            </span>
+
+            <strong id="withdrawal">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["projected_withdrawal"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                6-Hour Deposits
+            </span>
+
+            <strong id="deposit">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["projected_deposit"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Balance Before Transfer
+            </span>
+
+            <strong id="before">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["balance_before_transfer"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Transfer from Currency Chest
+            </span>
+
+            <strong id="transfer">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["planned_transfer"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Projected Remaining Cash
+            </span>
+
+            <strong id="remaining">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["remaining_balance"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <p>
+
+        Slot:
+
+        <strong id="slot">
+
+            {{ monitor["slot_start"] }}
+
+            →
+
+            {{ monitor["slot_end"] }}
+
+        </strong>
+
+    </p>
+
+
+    <p id="next-slot">
+
+        Next slot in
+        {{ monitor["next_slot_in_minutes"] }}
+        minutes.
+
+    </p>
+
+
+    <button
+        class="button"
+        onclick="enableNotifications()"
+    >
+
+        Enable Browser Reminder
+
+    </button>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        6-Hour History
+    </h2>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Slot
+                    </th>
+
+                    <th>
+                        Withdrawal
+                    </th>
+
+                    <th>
+                        Deposit
+                    </th>
+
+                    <th>
+                        Transfer
+                    </th>
+
+                    <th>
+                        Remaining
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for h in history %}
+
+                <tr>
+
+                    <td>
+                        {{ h["slot_start"] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            h["projected_withdrawal"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            h["projected_deposit"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            h["planned_transfer"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            h["remaining_balance"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        {{ h["reminder_level"] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

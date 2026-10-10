@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        Branch Cash Dashboard
+    </h1>
+
+    <p>
+        {{ branch["branch_name"] }}
+        •
+        {{ branch["location"] }}
+        •
+        {{ branch["branch_code"] }}
+    </p>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="card">
+
+        <div class="label">
+            Vault Cash
+        </div>
+
+        <div class="value">
+
+            ₹{{ "{:,.2f}".format(
+                branch["vault_balance"]
+            ) }}
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="label">
+            Daily Cash Demand
+        </div>
+
+        <div class="value">
+
+            ₹{{ "{:,.2f}".format(
+                forecast["total_forecast"]
+            ) }}
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="label">
+            Recommended Indent
+        </div>
+
+        <div class="value">
+
+            ₹{{ "{:,.2f}".format(
+                forecast["recommended_indent"]
+            ) }}
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="label">
+            6-Hour Transfer
+        </div>
+
+        <div class="value">
+
+            ₹{{ "{:,.2f}".format(
+                monitor["planned_transfer"]
+            ) }}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    id="monitor-card"
+    class="card status-card
+    {{ monitor['reminder_level']|lower }}"
+>
+
+    <h2>
+        Live 6-Hour Cash Reminder
+    </h2>
+
+
+    <div class="monitor-grid">
+
+        <div>
+
+            <span>
+                Current Slot
+            </span>
+
+            <strong id="slot">
+
+                {{ monitor["slot_start"] }}
+
+                →
+
+                {{ monitor["slot_end"] }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Withdrawals
+            </span>
+
+            <strong id="withdrawal">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["projected_withdrawal"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Deposits
+            </span>
+
+            <strong id="deposit">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["projected_deposit"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Before Transfer
+            </span>
+
+            <strong id="before">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["balance_before_transfer"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Transfer Required
+            </span>
+
+            <strong id="transfer">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["planned_transfer"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Remaining Cash
+            </span>
+
+            <strong id="remaining">
+
+                ₹{{ "{:,.2f}".format(
+                    monitor["remaining_balance"]
+                ) }}
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <p
+        id="reminder"
+        class="reminder"
+    >
+
+        {{ monitor["reminder_message"] }}
+
+    </p>
+
+
+    <button
+        class="button"
+        onclick="enableNotifications()"
+    >
+
+        Enable Browser Reminder
+
+    </button>
+
+
+    <span id="next-slot">
+
+        Next slot in
+        {{ monitor["next_slot_in_minutes"] }}
+        minutes
+
+    </span>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Update Actual Vault Balance
+    </h2>
+
+    <p>
+
+        After an authorized physical transfer,
+        enter the actual vault balance here.
+
+        The system does not execute a real
+        bank transfer.
+
+    </p>
+
+
+    <form
+        action="/update-vault"
+        method="post"
+        class="inline-form"
+    >
+
+        <input
+            type="number"
+            name="vault_balance"
+            step="0.01"
+            min="0"
+            value="{{ branch['vault_balance'] }}"
+            required
+        >
+
+        <button
+            class="button"
+            type="submit"
+        >
+
+            Save Vault Balance
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Bank Cash Forecasting Tool
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/style.css'
+        ) }}"
+    >
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        Bank Cash Forecasting
+    </div>
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/transactions">
+            Transactions
+        </a>
+
+        <a href="/forecast">
+            Forecast
+        </a>
+
+        <a href="/cash-monitor">
+            6-Hour Monitor
+        </a>
+
+        <a href="/reports">
+            Reports
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+<footer>
+
+    Bank Branch Cash Forecasting Tool
+    • Educational Project
+
+</footer>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/dashboard.js'
+    ) }}"
+></script>
+
+</body>
+
+</html>

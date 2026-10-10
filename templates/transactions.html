@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        Transactions
+    </h1>
+
+    <p>
+        Manage branch deposits, withdrawals,
+        teller cash and ATM replenishment.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Add Transaction
+    </h2>
+
+
+    <form
+        method="POST"
+        action="{{ url_for('add_transaction_route') }}"
+        class="form-grid"
+    >
+
+        <div>
+
+            <label>
+                Date
+            </label>
+
+            <input
+                type="date"
+                name="transaction_date"
+                required
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Transaction Type
+            </label>
+
+            <select
+                name="transaction_type"
+                required
+            >
+
+                <option value="WITHDRAWAL">
+                    Withdrawal
+                </option>
+
+                <option value="DEPOSIT">
+                    Deposit
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Amount
+            </label>
+
+            <input
+                type="number"
+                name="amount"
+                step="0.01"
+                required
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Channel
+            </label>
+
+            <select
+                name="channel"
+                required
+            >
+
+                <option value="TELLER">
+                    Teller
+                </option>
+
+                <option value="ATM">
+                    ATM
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Description
+            </label>
+
+            <input
+                type="text"
+                name="description"
+                placeholder="Description"
+            >
+
+        </div>
+
+
+        <div>
+
+            <button
+                type="submit"
+                class="button"
+            >
+                Add Transaction
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Transaction History
+    </h2>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Type
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Channel
+                    </th>
+
+                    <th>
+                        Salary Day
+                    </th>
+
+                    <th>
+                        Festival Day
+                    </th>
+
+                    <th>
+                        Description
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for transaction in transactions %}
+
+                <tr>
+
+                    <td>
+                        {{ transaction["transaction_date"] }}
+                    </td>
+
+                    <td>
+                        {{ transaction["transaction_type"] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "{:,.2f}".format(
+                            transaction["amount"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        {{ transaction["channel"] }}
+                    </td>
+
+                    <td>
+                        {% if transaction["is_salary_day"] %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if transaction["is_festival_day"] %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ transaction["description"] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
